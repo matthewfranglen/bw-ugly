@@ -132,12 +132,12 @@ public class UglyPlugin extends AbstractPlugin {
 
 	@Subscribe
 	public void arrivalListener(ArrivalNotification arrival) {
-		state.arrivalListener(this, arrival);
+		state.arrivalListener(this);
 	}
 
 	@Subscribe
 	public void tickListener(ClockTick tick) throws Exception {
-		state.tickListener(this, tick);
+		state.tickListener(this);
 	}
 
 	/**
@@ -216,12 +216,12 @@ public class UglyPlugin extends AbstractPlugin {
 		START {
 
 			@Override
-			void arrivalListener(UglyPlugin plugin, ArrivalNotification arrival) {
+			void arrivalListener(UglyPlugin plugin) {
 				plugin.setState(TRADE);
 			}
 
 			@Override
-			void tickListener(UglyPlugin plugin, ClockTick tick) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+			void tickListener(UglyPlugin plugin) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 					IllegalArgumentException, InvocationTargetException {
 				if (plugin.customerService != null) {
 					return;
@@ -248,16 +248,16 @@ public class UglyPlugin extends AbstractPlugin {
 		TRADE {
 
 			@Override
-			void tickListener(UglyPlugin plugin, ClockTick tick) throws IllegalArgumentException, IllegalAccessException {
+			void tickListener(UglyPlugin plugin) throws IllegalArgumentException, IllegalAccessException {
 				plugin.stockWarehouse();
 				plugin.stockShop();
 				plugin.refreshFixers();
 			}
 		};
 
-		void arrivalListener(UglyPlugin plugin, ArrivalNotification arrival) {
+		void arrivalListener(UglyPlugin plugin) {
 		}
 
-		abstract void tickListener(UglyPlugin plugin, ClockTick tick) throws Exception;
+		abstract void tickListener(UglyPlugin plugin) throws Exception;
 	}
 }
